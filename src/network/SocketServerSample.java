@@ -14,10 +14,13 @@ public class SocketServerSample {
     }
 
     private void startServer() {
-        try (ServerSocket server = new ServerSocket(9999);
-            Socket client = server.accept()) {
+        ServerSocket server=null;
+        Socket client = null;
+        try {
+            server = new ServerSocket(9999);
             while(true){
                 System.out.println("Client accepted...............");
+                client = server.accept();
                 InputStream stream = client.getInputStream();
                 BufferedReader in = new BufferedReader(new InputStreamReader(stream));
                 String data = null;
@@ -28,6 +31,7 @@ public class SocketServerSample {
                 System.out.println("received Data : "+receivedData);
                 in.close();
                 stream.close();
+                client.close();
                 if(receivedData!=null && "EXIT".equals(receivedData.toString())){
                     System.out.println("Stop Socket Server................");
                     break;
@@ -36,6 +40,14 @@ public class SocketServerSample {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }finally {
+            if(server!=null){
+                try {
+                    server.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }

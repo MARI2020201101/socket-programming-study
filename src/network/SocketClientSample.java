@@ -23,7 +23,9 @@ public class SocketClientSample {
     }
 
     private void sendSocketData(String s) {
-        try (Socket socket = new Socket("127.0.0.1", 9999)) {
+        Socket socket=null;
+        try {
+            socket = new Socket("127.0.0.1", 9999);
             System.out.println("Client socket status : " + socket.isConnected());
             Thread.sleep(1000);
             OutputStream stream = socket.getOutputStream();
@@ -34,6 +36,15 @@ public class SocketClientSample {
             out.close();
         } catch (Exception e) {
             e.printStackTrace();
+        }finally {
+            if(socket!=null) {
+                try {
+                    socket.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
         }
     }
 
