@@ -25,13 +25,14 @@ public class SocketClientSample {
     private void sendSocketData(String s) {
         Socket socket=null;
         try {
-            socket = new Socket("127.0.0.1", 9999);
+            socket = new Socket("127.0.0.1", 9999);//소켓을 열고
             System.out.println("Client socket status : " + socket.isConnected());
             Thread.sleep(1000);
-            OutputStream stream = socket.getOutputStream();
+            OutputStream stream = socket.getOutputStream();//스트림을 소켓에서 열어서
+            // PrintWriter를 이용하면, char단위로 읽기때문에 아래 로직을 줄일 수 있다.
             BufferedOutputStream out = new BufferedOutputStream(stream);
             byte[] data = s.getBytes(StandardCharsets.UTF_8);
-            out.write(data);
+            out.write(data);//버퍼로 소켓에 쓴다. 바이트스트림기반 버퍼
             System.out.println("Client socket: Send data...........");
             out.close();
         } catch (Exception e) {

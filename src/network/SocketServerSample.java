@@ -17,26 +17,26 @@ public class SocketServerSample {
         ServerSocket server=null;
         Socket client = null;
         try {
-            server = new ServerSocket(9999);
+            server = new ServerSocket(9999);//소켓을 열고
             while(true){
                 System.out.println("Client accepted...............");
-                client = server.accept();
-                InputStream stream = client.getInputStream();
-                BufferedReader in = new BufferedReader(new InputStreamReader(stream));
+                client = server.accept();//클라이언트를 기다린다.
+                InputStream stream = client.getInputStream();//스트림을 열어서
+                BufferedReader in = new BufferedReader(new InputStreamReader(stream));//버퍼로 읽는다.
                 String data = null;
                 StringBuilder receivedData = new StringBuilder();
                 while((data=in.readLine())!=null){
                     receivedData.append(data);
                 }
                 System.out.println("received Data : "+receivedData);
-                in.close();
-                stream.close();
-                client.close();
+
                 if(receivedData!=null && "EXIT".equals(receivedData.toString())){
                     System.out.println("Stop Socket Server................");
                     break;
                 }
-
+                in.close();
+                stream.close();
+                client.close();//exit후 닫도록 수정함
             }
         } catch (Exception e) {
             e.printStackTrace();
